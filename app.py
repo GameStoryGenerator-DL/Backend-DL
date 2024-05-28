@@ -7,15 +7,6 @@ from transformers import pipeline
 app = Flask(__name__)
 
 CHROMA_PATH = "chroma"
-# PROMPT_TEMPLATE = """
-# Répondre à la question : "## {question} ##" en se basant sur le contexte suivant :
-
-# {context}
-
-# ---
-
-# Répondez à cette {question} en se basant sur le contexte donné ci-dessus
-# """
 
 PROMPT_TEMPLATE = """
 Générer une histoire de jeux vidéo en se basant sur cette phrase : "## {question} ##" et selon le contexte suivant :
