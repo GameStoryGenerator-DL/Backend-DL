@@ -4,7 +4,11 @@ from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain.prompts import ChatPromptTemplate
 from transformers import pipeline
 
+from flask_cors import CORS
+
 app = Flask(__name__)
+# CORS(app)
+CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
 
 CHROMA_PATH = "chroma"
 
@@ -20,9 +24,14 @@ Générer une histoire de jeux vidéo en se basant sur cette phrase : "## {quest
 
 
 
+@app.route('/chat', methods=['GET'])
+def home():
+    data = {"message": "Hello from Flask!"}
+    return jsonify(data)
+
 
 @app.route('/', methods=['POST'])
-def query():
+def chatbot():
     data = request.json
     query_text = data.get('query', '')
 
@@ -48,11 +57,11 @@ def query():
         response_text = response_text.split("et selon le contexte donné ci-dessus", 1)[-1]
     
     formatted_response = {
-        'response': response_text,
+        'response': response_text.strip(),
     }
 
-    return response_text
-    # return jsonify(formatted_response)
+    # return response_text
+    return jsonify(formatted_response)
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(debug=True)
